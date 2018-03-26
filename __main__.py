@@ -167,7 +167,7 @@ class Game():
             if source.hp + 100 * random.choice(rep_list) > source.max_hp:
                 source.hp = source.max_hp
             else:
-                source.hp += 100
+                source.hp += 100 * random.choice(rep_list)
         elif move == "Super Heal":
             sh_list = [1.1, 1.0, .8]
             if source.hp + 80 * random.choice(sh_list) > source.max_hp:
