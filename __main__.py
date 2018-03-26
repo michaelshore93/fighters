@@ -187,7 +187,7 @@ class Game():
                 source.hp += 75
         elif move == "Lederhosen Disco":
             source.attack = source.attack * 2
-            source.defense = source.defense * .5
+            source.defense = source.defense * .9
         elif move == "Ninja Star Smash":
             nsm_list = [5.0, 2.0, 1.0]
             target.hp -= 40 * random.choice(nsm_list)
