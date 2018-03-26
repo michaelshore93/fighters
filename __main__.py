@@ -41,7 +41,7 @@ class Game():
                         200)
         oprah = Fighter("Oprah", 130, 12, 15, 6, ["Hyper Kick", "Super Heal"],
                         130)
-        chris = Fighter("Chris", 140, 20, 8, 12, ["Curb Stomp", "Ramen Feast",
+        chris = Fighter("Chris", 140, 20, 9, 12, ["Curb Stomp", "Ramen Feast",
                         "Lederhosen Disco"], 140)
         dj_jmessic_arson = Fighter("DJ JMessicArson", 170, 12, 12, 15,
                                    ["Ninja Star Smash", "Freestyle Rap"], 170)
