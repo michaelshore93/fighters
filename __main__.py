@@ -3,7 +3,7 @@ from typing import List
 
 intro = """NOTE: Press Ctrl + C to quit the game at any time.
 Choose your character wisely. Each fighter has its own moves and stats!
-To learn more, study the code here: \n """
+To learn more, study the code here: https://goo.gl/5t8Re9 \n """
 
 print(intro)
 
