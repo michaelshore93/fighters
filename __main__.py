@@ -10,7 +10,7 @@ print(intro)
 
 
 class Fighter():
-    """Chooses fighter."""
+    """Choose fighter."""
     def __init__(self, name: str, hp: int, attack: int, defense: int, speed:
                  int, moves: List[str], max_hp: str):
         self.name = name
@@ -27,7 +27,7 @@ class Fighter():
 
 
 class Game():
-    """Runs the game."""
+    """Run the game."""
     def __init__(self):
         self.fighters = None
         self.player = None
@@ -69,7 +69,7 @@ class Game():
             print("Invalid choice. Try again.")
 
     def select_opponent_char(self):
-        """Select opponent character."""
+        """Select opponent's character."""
         while True:
             self.opponent = random.choice(self.fighters)
             if self.opponent != self.player:
