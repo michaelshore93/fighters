@@ -189,7 +189,7 @@ class Game():
             source.attack = source.attack * 2
             source.defense = source.defense * .9
         elif move == "Ninja Star Smash":
-            nsm_list = [5.0, 2.0, 1.0]
+            nsm_list = [5.0, 2.0, 1.25, 1.0, 0.5]
             target.hp -= 40 * random.choice(nsm_list)
         elif move == "Freestyle Rap":
             target.hp = target.hp / 2
