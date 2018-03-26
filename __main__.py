@@ -1,4 +1,5 @@
 import random
+import sys
 from typing import List
 
 intro = """NOTE: Press Ctrl + C to quit the game at any time.
@@ -40,8 +41,8 @@ class Game():
                         200)
         oprah = Fighter("Oprah", 130, 12, 15, 6, ["Hyper Kick", "Super Heal"],
                         130)
-        chris = Fighter("Chris", 140, 20, 8, 12, ["Curb Stomp", "Ramen Feast"],
-                        140)
+        chris = Fighter("Chris", 140, 20, 8, 12, ["Curb Stomp", "Ramen Feast",
+                        "Lederhosen Disco"], 140)
         dj_jmessic_arson = Fighter("DJ JMessicArson", 170, 12, 12, 15,
                                    ["Ninja Star Smash", "Freestyle Rap"], 170)
         self.fighters = [bread, oprah, chris, dj_jmessic_arson]
@@ -49,6 +50,8 @@ class Game():
     def start(self):
         self.select_player_char()
         self.select_opponent_char()
+        print("The fight begins: %s vs. %s" % (self.player.name.upper(),
+              self.opponent.name.upper()))
         self.run()
 
     def select_player_char(self):
@@ -62,7 +65,6 @@ class Game():
                 continue
             if choice in range(1, len(self.fighters) + 1):
                 self.player = self.fighters[choice - 1]
-                print("You chose %s." % self.player.name)
                 return
             print("Invalid choice. Try again.")
 
@@ -72,7 +74,6 @@ class Game():
             self.opponent = random.choice(self.fighters)
             if self.opponent != self.player:
                 break
-        print("Opponent chooses %s." % self.opponent.name)
 
     def run(self):
         """Main game loop."""
@@ -83,14 +84,12 @@ class Game():
     def turn(self):
         """Simulate one turn."""
         self.turn_num += 1
+        print("=======")
         print("Turn %d" % self.turn_num)
         print("=======")
         # select moves
         player_choice = self.get_player_choice()
         opponent_choice = self.get_opponent_choice()
-        # test move selection
-        print("You chose %s" % player_choice)
-        print("Opponent chooses %s" % opponent_choice)
         # run moves
         if self.player.speed > self.opponent.speed:
             first = 1
@@ -127,69 +126,70 @@ class Game():
         return random.choice(self.opponent.available_moves())
 
     def check_gameover(self):
-        if (self.player.hp <= 0 and self.opponent.hp <= 0 and
-                self.player.speed > self.opponent.speed):  # player wins
-            self.end(winner=1)
-        elif (self.player.hp <= 0 and self.opponent.hp <= 0 and
-                self.player.speed < self.opponent.speed):  # opponent wins
-            self.end(winner=2)
-        elif self.opponent.hp <= 0:  # player wins
-            self.end(winner=3)
-        elif self.player.hp <= 0:  # opponent wins
-            self.end(winner=4)
+        if self.player.hp <= 0 and self.opponent.hp <= 0:
+            if self.player.speed > self.opponent.speed:
+                self.end(1)
+            else:
+                self.end(2)
+        elif self.opponent.hp <= 0:
+            self.end(1)
+        elif self.player.hp <= 0:
+            self.end(2)
 
     def end(self, winner: int):
         self.gameover = True
-        if winner == 1 or 3:
-            print("You win! Congrats. {}".format(self.opponent.hp))
-        elif winner == 2 or 4:
+        if winner == 1:
+            print("You win! Congrats.")
+        elif winner == 2:
             print("You lose. Rip.")
+        sys.exit(0)
 
     def print_status(self):
-        print("You have %d hp left" % self.player.hp)
-        print("Opponent has %d hp left" % self.opponent.hp)
+        print("%s has %d hp left" % (self.player.name, self.player.hp))
+        print("%s has %d hp left" % (self.opponent.name, self.opponent.hp))
 
     def use(self, source, move: str, target=None):
-
-        hp_list = [1.2, 1.1, .9]
-        hk_list = [1.1, .9, .8]
-        cs_list = [1.0, .8, .7]
-        rep_list = [1.1, 1.0, .5, .3]
-        sh_list = [1.1, 1.0, .8]
-        nsm_list = [5.0, 2.0, 1.0]
-
+        print("%s uses %s" % (source.name, move))
         if move == "Hook Punch":
-            hp_list = [1.2, 1.1, 1]
-            if self.player.hp < 50:
+            hk_list = [1.1, .9, .8]
+            if source.hp < 50:
                 target.hp -= (60 * 1.6 * random.choice(hk_list) *
-                              self.player.attack / self.opponent.defense)
+                              source.attack / target.defense)
             else:
                 target.hp -= (60 * random.choice(hk_list) *
-                              self.player.attack / self.opponent.defense)
+                              source.attack / target.defense)
         elif move == "Hyper Kick":
+            hp_list = [1.2, 1.1, .9]
             target.hp -= (80 * random.choice(hp_list) *
-                          self.player.attack / self.opponent.defense)
+                          source.attack / target.defense)
         elif move == "Replenish":
+            rep_list = [1.1, 1.0, .5, .3]
             if source.hp + 100 * random.choice(rep_list) > source.max_hp:
                 source.hp = source.max_hp
             else:
                 source.hp += 100
         elif move == "Super Heal":
+            sh_list = [1.1, 1.0, .8]
             if source.hp + 80 * random.choice(sh_list) > source.max_hp:
                 source.hp = source.max_hp
             else:
                 source.hp += 80 * random.choice(sh_list)
         elif move == "Curb Stomp":
-            target.hp -= (80 * random.choice(cs_list) * self.player.attack /
-                          self.opponent.defense)
+            cs_list = [1.0, .8, .7]
+            target.hp -= (80 * random.choice(cs_list) * source.attack /
+                          target.defense)
         elif move == "Ramen Feast":
-            if source.hp < 30 and source.hp > 10:
+            if source.hp < 20 and source.hp > 10:
                 source.hp = source.max_hp
             elif source.hp + 75 > source.max_hp:
                 source.hp = source.max_hp
             else:
                 source.hp += 75
+        elif move == "Lederhosen Disco":
+            source.attack = source.attack * 2
+            source.defense = source.defense * .5
         elif move == "Ninja Star Smash":
+            nsm_list = [5.0, 2.0, 1.0]
             target.hp -= 40 * random.choice(nsm_list)
         elif move == "Freestyle Rap":
             target.hp = target.hp / 2
