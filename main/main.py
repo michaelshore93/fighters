@@ -22,7 +22,7 @@ class Fighter():
         self.max_hp = max_hp
 
     def available_moves(self):
-        """Returns a list of available moves."""
+        """Return a list of available moves."""
         return self.moves
 
 
